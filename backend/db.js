@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 require('dotenv').config(); // Load environment variables from the .env file
 
 const connectDB = async () => {
-  const uri = process.env.MONGODB_URI; // Access the MongoDB URI from .env
+  const uri = "mongodb+srv://blogDB:blogDB@cluster0.xhsvl.mongodb.net/blogDB?retryWrites=true&w=majority"; // Access the MongoDB URI from .env
 
   if (!uri) {
     console.error("❌ MongoDB URI is missing in the .env file!");
@@ -44,3 +44,8 @@ process.on('SIGINT', async () => {
 });
 
 module.exports = connectDB;
+
+
+
+// MONGODB_URI=mongodb+srv://blogDB:blogDB@cluster0.xhsvl.mongodb.net/blogDB?retryWrites=true&w=majority
+// JWT_SECRET=guptt_raaz 

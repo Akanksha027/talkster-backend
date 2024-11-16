@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use(express.json());
 
-const uri = process.env.MONGODB_URI;
+const uri = "mongodb+srv://blogDB:blogDB@cluster0.xhsvl.mongodb.net/blogDB?retryWrites=true&w=majority";
 
 connectDB(); 
 
