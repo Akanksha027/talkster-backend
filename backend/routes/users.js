@@ -24,13 +24,15 @@ router.post('/register', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find(); 
+    const users = await User.find();
     res.status(200).json(users);
   } catch (error) {
     console.error('Error fetching users:', error.message);
     res.status(500).json({ message: 'Error fetching users', error: error.message });
   }
 });
+
+
 
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
@@ -41,23 +43,47 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '98h' });
+    const token = jwt.sign({ userId: user._id }, "guptt_raaz", { expiresIn: '98h' });
     res.json({ token });
   } catch (error) {
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-router.get('/profile', authenticateToken, async (req, res) => {
+
+
+
+router.get('/profile', async (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ error: 'Unauthorized: Missing or invalid token' });
+  }
+
+  const token = authHeader.split(' ')[1];
+
   try {
-    const user = await User.findById(req.user.userId); 
+    const secret = "guptt_raaz"; // Fallback for testing
+    const decoded = jwt.verify(token, secret);
+
+    // Find user by ID from the token
+    const user = await User.findById(decoded.userId);
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    res.json({ username: user.username });
+
+    // Respond with user details (e.g., name and username)
+    res.json({
+      user: {
+        username: user.username,
+      },
+    });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch profile data' });
+    console.error('Token verification error:', error.message);
+    return res.status(401).json({ error: 'Invalid token' });
   }
 });
+
 
 module.exports = router;
