@@ -14,13 +14,13 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.use(express.json());
 
-// MongoDB connection
 const uri = process.env.MONGODB_URI;
 
-// Connect to the database
-connectDB(); // Call the function once
+connectDB(); 
 
-
+app.get('/', (req, res) => {
+  res.send('server running bc');
+});
 
 // Test route to check MongoDB connection
 app.get('/test-db', async (req, res) => {
@@ -42,7 +42,6 @@ app.get('/protected', authenticateToken, (req, res) => {
 });
 
 
-// Use routes
 app.use('/api/posts', postRoutes);
 app.use('/api/users', userRoutes);
 
