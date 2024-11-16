@@ -10,7 +10,7 @@ const authenticateToken = require('./middlewares/authenticateToken'); // Token m
 const app = express();
 
 const cors = require("cors");
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors());
 
 app.use(express.json());
 
