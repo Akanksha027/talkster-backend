@@ -1,7 +1,7 @@
 const express = require('express');
-const User = require('../models/user');
 const jwt = require('jsonwebtoken');
-const authenticateToken = require('../middlewares/authenticateToken'); // Middleware for token authentication
+const authenticateToken = require('../middlewares/authenticateToken');
+const { User } = require('../db');
 const router = express.Router();
 
 // Registration route
@@ -22,10 +22,9 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Get all users
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find(); // Fetch all users
+    const users = await User.find(); 
     res.status(200).json(users);
   } catch (error) {
     console.error('Error fetching users:', error.message);
@@ -33,7 +32,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Login route
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
@@ -43,7 +41,6 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Generate JWT token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '98h' });
     res.json({ token });
   } catch (error) {
@@ -51,10 +48,9 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Profile route
 router.get('/profile', authenticateToken, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId); // Extracted from the token
+    const user = await User.findById(req.user.userId); 
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
