@@ -1,7 +1,7 @@
 
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://vishurizz01:RzfgxKDYAOSSooKq@cluster0.7ozbuch.mongodb.net/akku")
+mongoose.connect("mongodb+srv://akankshasingh0085:vishu%40vishu@cluster0.xhsvl.mongodb.net/akku")
 
 const PostSchema = new mongoose.Schema({
   title: String,
